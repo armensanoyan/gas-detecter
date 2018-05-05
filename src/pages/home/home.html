@@ -1,17 +1,22 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Home</ion-title>
-  </ion-navbar>
-</ion-header>
 
+      <ion-item no-lines style="padding: 0px">
+        <ion-title>Home</ion-title>
+        <ion-icon item-end name='clipboard' (click)='onClickOpenList()'></ion-icon>
+      </ion-item>
+
+    </ion-navbar>
+  </ion-header>
+  
 <ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+  <span [innerHtml]='connectToBluetooth'></span>
+
+  <div *ngIf="text">
+    <ion-list *ngFor="let line of text">
+        <ion-item>{{ line }}</ion-item>
+    </ion-list>
+    <br>
+  </div>
+  <button ion-button (click)='write()'>message</button>
 </ion-content>
