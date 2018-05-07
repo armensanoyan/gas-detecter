@@ -35,45 +35,49 @@ export class HomePage {
                 console.log('failure for devise listener', failure);
             } )
             
-            const newDevices = this.bluetoothSerial.discoverUnpaired()
-            console.log('newDevices-->', newDevices);
-
-            const setDeviceDiscoveredListener = this.bluetoothSerial.setDeviceDiscoveredListener()
-            setDeviceDiscoveredListener.subscribe(success => {
-                console.log('success for listening devices', success);
-
-            }, failure => {
-                console.log('failure for devise listener', failure);
-            })
-
+            console.log(this.bluetoothSerial);
             
-
             const subscribeForData = this.bluetoothSerial.subscribe('\n');
             subscribeForData.subscribe(success => {
-                this.ngZone.run(() => {
-                    this.text.push(success)
-                })
+                console.log('inside subscribeForData');
+                
+                // this.ngZone.run(() => {
+                //     this.text.push(success)
+                // })
                 console.log('subscribeForData', success);
                 console.log('this.text', this.text);
 
-            }, failure => {
-                console.log('subscribeForData', failure);
-            })
-
-            const write = this.bluetoothSerial.write('hello world').then((success) => {
-                    console.log('success in writing', success);
+                const write = this.bluetoothSerial.write(success).then((success) => {
+                    console.log('success in writing', success + '\r\n');
                 }, failure => {
                     console.log('failt to write',failure);
-
                 });
 
-                const readData = this.bluetoothSerial.read();
-                readData.then(data => {
-                    console.log('readData',data)
-                }, failure => {
-                    console.log('failure', failure);
+            }, failure => {
+                console.log('subscribeForData failure', failure);
+            })
+
+            console.log('subscribeForData', subscribeForData);
+
+            const write = this.bluetoothSerial.write('hello world').then((success) => {
+                console.log('success in writing', success);
+            }, failure => {
+                console.log('failt to write',failure);
+            });
+
+
+            const readData = this.bluetoothSerial.read()
             
-         })
+            readData.then(data => {
+                console.log('readData',data)
+            }, failure => {
+                console.log('failure', failure);
+            
+            })
+
+            console.log('readData', readData);
+         
+
         })
     }
 
@@ -120,24 +124,24 @@ export class HomePage {
 
     onDevicesClick(id) {
         
-            this.platform.ready().then(() => {
-                const connection = this.bluetoothSerial.connectInsecure(id)
-                .subscribe((success) => {
-                    console.log('succesfully connected', success);
-                    this.ngZone.run(() => {
-                        this.connectToBluetooth = 'the connection is established'
-                    })
-                    console.log('connectToBluetooth', this.connectToBluetooth);
-    
-    
-                }, (failure) => {
-                    console.log('failt to connect', failure)
-                    this.ngZone.run(() => {
-                        this.connectToBluetooth = `sorry couldn't connect to device ${this.times}`
-                    })
-                    console.log('connectToBluetooth', this.connectToBluetooth);
+        this.platform.ready().then(() => {
+            const connection = this.bluetoothSerial.connectInsecure(id)
+            .subscribe((success) => {
+                console.log('succesfully connected', success);
+                this.ngZone.run(() => {
+                    this.connectToBluetooth = 'the connection is established'
                 })
+                console.log('connectToBluetooth', this.connectToBluetooth);
+
+
+            }, (failure) => {
+                console.log('failt to connect', failure)
+                this.ngZone.run(() => {
+                    this.connectToBluetooth = `sorry couldn't connect to device ${this.times}`
+                })
+                console.log('connectToBluetooth', this.connectToBluetooth);
             })
+        })
     }
 
     write() {
