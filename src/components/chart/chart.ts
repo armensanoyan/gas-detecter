@@ -78,6 +78,17 @@ export class ChartComponent {
     }
 
     react(value='') {
+        if (Number(value) > 100) {
+            this.lineChart.data.datasets[0].backgroundColor = "rgba(255,0,0)"
+            this.lineChart.data.datasets[0].borderColor = "rgba(255,0,0)"
+            this.lineChart.data.datasets[0].pointBorderColor = "rgba(255,0,0)"
+        }
+        else {
+            this.lineChart.data.datasets[0].backgroundColor = "rgba(75,192,192,0.4)"
+            this.lineChart.data.datasets[0].borderColor = "rgba(75,192,192,1)"
+            this.lineChart.data.datasets[0].pointBorderColor = "rgba(75,192,192,1)"
+        } 
+        
         this.lineChart.data.datasets[0].data.splice(0,1)
         this.lineChart.data.datasets[0].data.push(Number(value))
         this.lineChart.update()
