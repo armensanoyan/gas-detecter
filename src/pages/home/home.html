@@ -10,13 +10,11 @@
   </ion-header>
   
 <ion-content padding>
-  <span [innerHtml]='connectToBluetooth'></span>
+    
+    <chart [concentration]='concentration'></chart>
+    
+    <span [innerHtml]='connectToBluetooth'></span>
 
-  <div *ngIf="text">
-    <ion-list *ngFor="let line of text">
-        <ion-item>{{ line }}</ion-item>
-    </ion-list>
-    <br>
-  </div>
-  <button ion-button (click)='write()'>message</button>
+    <button ion-button (click)='write()'>message</button>
+
 </ion-content>

@@ -1,28 +1,27 @@
-
-import { Component, ViewChild } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Component, ViewChild,Input } from '@angular/core';
 import { Chart } from 'chart.js';
- 
+
 @Component({
-  selector: 'page-about',
-  templateUrl: 'about.html'
+    selector: 'chart',
+    templateUrl: 'chart.html'
 })
-export class AboutPage {
- 
+
+export class ChartComponent {
+    @Input() concentration
     @ViewChild('lineCanvas') lineCanvas;
-    @ViewChild('alineCanvas') alineCanvas;
  
     lineChart: any;
-    alineChart: any;
- 
-    constructor(public navCtrl: NavController) {
- 
-    }
- 
-    ionViewDidLoad() {
+
+    constructor() {
+  }
+
+    ngOnInit() {
+    
+        console.log('concentration  ', this.concentration);
+        
  
         this.lineChart = new Chart(this.lineCanvas.nativeElement, {
- 
+
             type: 'line',
             data: {
                 labels: ["January", "February", "March", "April", "May", "June", "July"],
@@ -51,22 +50,14 @@ export class AboutPage {
                     }
                 ]
             }
- 
         });
- 
-
-
     }
 
     react() {
         this.lineChart.data.datasets[0].data.splice(0,1)
-        this.lineChart.data.datasets[0].data.push(Math.floor((Math.random() * 100) + 1))
-
+        this.lineChart.data.datasets[0].data.push(this.concentration)
         this.lineChart.update()
 
-        console.log('react   ', this.lineChart.data.datasets[0].data);
-        
+        console.log('react from chart  ', this.lineChart.data.datasets[0].data);
     }
- 
 }
-

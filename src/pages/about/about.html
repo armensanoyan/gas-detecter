@@ -1,25 +1,25 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      About
-    </ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>
+            About
+        </ion-title>
+    </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-    <div class="row">
-        <div class="col-md-6">
-          <div style="display: block;">
-          <canvas baseChart width="300" height="400"
-                      [datasets]="lineChartData"
-                      [labels]="lineChartLabels"
-                      [options]="lineChartOptions"
-                      [colors]="lineChartColors"
-                      [legend]="lineChartLegend"
-                      [chartType]="lineChartType"
-                      (chartHover)="chartHovered($event)"
-                      (chartClick)="chartClicked($event)"></canvas>
-          </div>
-        </div>
-      </div>
+    <button ion-button (click)='react()'>button </button>
+    <ion-card>
+        <ion-card-header>
+            Line Chart
+        </ion-card-header>
+
+        <ion-card-content>
+            <canvas #lineCanvas></canvas>
+        </ion-card-content>
+
+        <ion-card-content>
+            <canvas #alineCanvas></canvas>
+        </ion-card-content>
+
+    </ion-card>
 </ion-content>
