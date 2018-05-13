@@ -1,4 +1,6 @@
 import { Component, ViewChild,Input } from '@angular/core';
+import { ConnectionProvider } from '../../providers/connection/connection';
+
 import { Chart } from 'chart.js';
 
 @Component({
@@ -12,13 +14,14 @@ export class ChartComponent {
  
     lineChart: any;
 
-    constructor() {
+    constructor(
+        public connectionProvider: ConnectionProvider
+    ) {
   }
 
     ngOnInit() {
     
         console.log('concentration  ', this.concentration);
-        
  
         this.lineChart = new Chart(this.lineCanvas.nativeElement, {
 

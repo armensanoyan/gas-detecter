@@ -1,12 +1,7 @@
-import { Component, NgZone, ViewChild } from '@angular/core';
-import { NavController, Platform, ActionSheetController, Content } from 'ionic-angular';
-// import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
+import { Component, NgZone } from '@angular/core';
+import { Platform, ActionSheetController } from 'ionic-angular';
 import { AboutPage } from '../about/about'
 import { ConnectionProvider } from '../../providers/connection/connection';
-
-
-import { ChartsModule } from 'ng2-charts';
-import { LIFECYCLE_HOOKS_VALUES } from '@angular/compiler/src/lifecycle_reflector';
 
 
 @Component({
@@ -15,24 +10,18 @@ import { LIFECYCLE_HOOKS_VALUES } from '@angular/compiler/src/lifecycle_reflecto
 })
 
 export class HomePage {
-    @ViewChild(Content) content: Content;
-    concentration = ''
-    // devices = []
-    // device = 0
+
+    concentration = 'A'
     connectToBluetooth
+
     constructor(
         public connectionProvider: ConnectionProvider,
-        public navCtrl: NavController, 
-        // public bluetoothSerial: BluetoothSerial, 
         public platform: Platform,
         public ngZone: NgZone,
         public actionSheetCtrl: ActionSheetController,
-        public ChartsModule: ChartsModule,
     ) {}
 
-    ngOnInit() {
-        
-    }
+    ngOnInit() {}
 
     onClickOpenList() {
 
@@ -43,10 +32,7 @@ export class HomePage {
         }, failure => {
             console.log('listOfDevices failed ', failure);
         })
-        
-
     }
-
     write() {
         this.connectionProvider.write()
     }
@@ -68,7 +54,7 @@ export class HomePage {
                             this.ngZone.run(() => {
                                 this.connectToBluetooth = 'the connection is established'
                                 const result = this.connectionProvider.subscribeForData()
-                                this.resivrDate(result)
+                                this.resiveDate(result)
                             })
             
                         }, (failure) => {
@@ -82,25 +68,23 @@ export class HomePage {
                 buttons.push(button)
             });
             
-            buttons.push(
-                {
+            buttons.push({
                     text: 'Cancel',
                     role: 'cancel',
                     handler: () => {
                         console.log('Cancel clicked');
                     }}
                 )
+            let actionSheet = this.actionSheetCtrl.create({
+                title: 'Devices',
+                buttons: buttons
+            });
                 
-                let actionSheet = this.actionSheetCtrl.create({
-                    title: 'Devices',
-                    buttons: buttons
-                });
-                
-                actionSheet.present();
+            actionSheet.present();
         }
     }
 
-    resivrDate(subscribeForData) {
+    resiveDate(subscribeForData) {
         subscribeForData.subscribe(success => {
             this.concentration = success
 
@@ -108,15 +92,8 @@ export class HomePage {
 
             this.connectionProvider.write(success)
 
-            // const write = this.bluetoothSerial.write(success).then((success) => {
-
-            // }, failure => {
-            //     console.log('failt to write', failure);
-            // });
-
         }, failure => {
             console.log('subscribeForData failure', failure);
         })
     }
-
-    }
+}

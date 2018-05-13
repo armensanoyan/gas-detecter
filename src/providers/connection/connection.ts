@@ -5,11 +5,8 @@ import { Platform } from 'ionic-angular';
 @Injectable()
 export class ConnectionProvider {
 
-    // text
     concentration = ''
     devices = []
-    // device = 0
-    times = 0
     connectToBluetooth
 
     constructor(
