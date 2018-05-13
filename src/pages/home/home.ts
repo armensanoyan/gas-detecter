@@ -1,5 +1,5 @@
 import { Component, NgZone } from '@angular/core';
-import { Platform, ActionSheetController } from 'ionic-angular';
+import { Platform, ActionSheetController, Events } from 'ionic-angular';
 import { AboutPage } from '../about/about'
 import { ConnectionProvider } from '../../providers/connection/connection';
 
@@ -19,6 +19,7 @@ export class HomePage {
         public platform: Platform,
         public ngZone: NgZone,
         public actionSheetCtrl: ActionSheetController,
+        public events: Events
     ) {}
 
     ngOnInit() {}
@@ -88,6 +89,8 @@ export class HomePage {
         subscribeForData.subscribe(success => {
             this.concentration = success
 
+            this.createUser(success)
+
             console.log('subscribeForData', this.concentration);
 
             this.connectionProvider.write(success)
@@ -96,4 +99,10 @@ export class HomePage {
             console.log('subscribeForData failure', failure);
         })
     }
+
+    createUser(value) {
+        console.log('Event created!')
+        this.events.publish('value', value);
+    }
+
 }

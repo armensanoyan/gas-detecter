@@ -1,5 +1,6 @@
 import { Component, ViewChild,Input } from '@angular/core';
 import { ConnectionProvider } from '../../providers/connection/connection';
+import { Events } from 'ionic-angular';
 
 import { Chart } from 'chart.js';
 
@@ -11,15 +12,23 @@ import { Chart } from 'chart.js';
 export class ChartComponent {
     @Input() concentration
     @ViewChild('lineCanvas') lineCanvas;
+    public value
  
     lineChart: any;
 
     constructor(
-        public connectionProvider: ConnectionProvider
-    ) {
-  }
+        public connectionProvider: ConnectionProvider,
+        public events: Events
+    ) {}
 
     ngOnInit() {
+
+        this.events.subscribe('value', value => {
+            this.react(value)
+            this.value = value
+            // user and time are the same arguments passed in `events.publish(user, time)`
+            console.log('Welcome', value, typeof value);
+          });
     
         console.log('concentration  ', this.concentration);
  
@@ -27,7 +36,7 @@ export class ChartComponent {
 
             type: 'line',
             data: {
-                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                labels: ["6 s", "5 s", "4 s", "3 s", "ծիծիկ", "1 s", "now"],
                 datasets: [
                     {
                         label: "My First dataset",
@@ -48,17 +57,29 @@ export class ChartComponent {
                         pointHoverBorderWidth: 2,
                         pointRadius: 1,
                         pointHitRadius: 10,
-                        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        data: [0, 0, 0, 0, 0, 0, 0],
                         spanGaps: false,
                     }
                 ]
             }
         });
+
+        const listenToData = this.connectionProvider.subscribeForData()
+        listenToData.subscribe(success => {
+            this.concentration = success
+
+            console.log('listenToData', this.concentration);
+
+            this.connectionProvider.write(success)
+
+        }, failure => {
+            console.log('listenToData failure', failure);
+        })
     }
 
-    react() {
+    react(value='') {
         this.lineChart.data.datasets[0].data.splice(0,1)
-        this.lineChart.data.datasets[0].data.push(this.concentration)
+        this.lineChart.data.datasets[0].data.push(Number(value))
         this.lineChart.update()
 
         console.log('react from chart  ', this.lineChart.data.datasets[0].data);
