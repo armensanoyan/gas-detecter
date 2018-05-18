@@ -27,16 +27,16 @@ export class ChartComponent {
             this.react(value)
             this.value = value
             // user and time are the same arguments passed in `events.publish(user, time)`
-            console.log('Welcome', value, typeof value);
+            // console.log('Welcome', value, typeof value);
           });
     
-        console.log('concentration  ', this.concentration);
+        // console.log('concentration  ', this.concentration);
  
         this.lineChart = new Chart(this.lineCanvas.nativeElement, {
 
             type: 'line',
             data: {
-                labels: ["6 s", "5 s", "4 s", "3 s", "ծիծիկ", "1 s", "now"],
+                labels: ['3.5 s', '3 s', '2.5 s', '2 s', "1.5 s", "1 s", "0.5 s", "now"],
                 datasets: [
                     {
                         label: "My First dataset",
@@ -57,7 +57,7 @@ export class ChartComponent {
                         pointHoverBorderWidth: 2,
                         pointRadius: 1,
                         pointHitRadius: 10,
-                        data: [0, 0, 0, 0, 0, 0, 0],
+                        data: [1, 2, 3, 4, 5, 6, 7, 8],
                         spanGaps: false,
                     }
                 ]
@@ -69,7 +69,7 @@ export class ChartComponent {
             this.concentration = success
 
             console.log('listenToData', this.concentration);
-
+            // this.react(this.concentration)
             this.connectionProvider.write(success)
 
         }, failure => {
@@ -93,6 +93,6 @@ export class ChartComponent {
         this.lineChart.data.datasets[0].data.push(Number(value))
         this.lineChart.update()
 
-        console.log('react from chart  ', this.lineChart.data.datasets[0].data);
+        // console.log('react from chart  ', this.lineChart.data.datasets[0].data);
     }
 }

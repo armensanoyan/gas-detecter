@@ -25,6 +25,16 @@ export class ConnectionProvider {
         return subscribeForData
     }
 
+    subscribeForRowData() {
+        const subscribeForData =this.bluetoothSerial.subscribeRawData()
+        return subscribeForData
+    }
+
+    fromBufferToString() {
+        const getStrings = this.bluetoothSerial.read()
+        return getStrings
+    }
+
     onDevicesClick(id) {
         const connection = this.bluetoothSerial.connectInsecure(id)
         return connection

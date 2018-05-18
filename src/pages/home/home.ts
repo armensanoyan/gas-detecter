@@ -2,6 +2,7 @@ import { Component, NgZone } from '@angular/core';
 import { Platform, ActionSheetController, Events } from 'ionic-angular';
 import { AboutPage } from '../about/about'
 import { ConnectionProvider } from '../../providers/connection/connection';
+import { TextEncoder, TextDecoder } from 'text-encoding-shim';
 
 
 @Component({
@@ -11,8 +12,9 @@ import { ConnectionProvider } from '../../providers/connection/connection';
 
 export class HomePage {
 
-    concentration = 'A'
+    // concentration = 'A'
     connectToBluetooth
+    times = 0
 
     constructor(
         public connectionProvider: ConnectionProvider,
@@ -54,8 +56,9 @@ export class HomePage {
                         connectingToDevice.subscribe((success) => {
                             this.ngZone.run(() => {
                                 this.connectToBluetooth = 'the connection is established'
-                                const result = this.connectionProvider.subscribeForData()
-                                this.resiveDate(result)
+                                const rowResult = this.connectionProvider.subscribeForRowData()
+                                this.times++
+                                this.reciveDate(rowResult, this.times)
                             })
             
                         }, (failure) => {
@@ -68,7 +71,6 @@ export class HomePage {
                 }
                 buttons.push(button)
             });
-            
             buttons.push({
                     text: 'Cancel',
                     role: 'cancel',
@@ -80,28 +82,32 @@ export class HomePage {
                 title: 'Devices',
                 buttons: buttons
             });
-                
             actionSheet.present();
         }
     }
 
-    resiveDate(subscribeForData) {
-        subscribeForData.subscribe(success => {
-            this.concentration = success
+    reciveDate(subscribeForData, times) {
+        
+        console.log('success -> ', subscribeForData);
 
-            this.createUser(success)
+        
+        subscribeForData.subscribe(data => {
+            console.log('data', data);
 
-            console.log('subscribeForData', this.concentration);
+            const intBuffer = new Uint8Array(data) 
 
-            this.connectionProvider.write(success)
+            console.log('intBuffer -> ', intBuffer, 'type ->', typeof intBuffer);
+            
+            console.log('first element intBuffer ->', intBuffer[0]);
+            
+            this.createUser(intBuffer[0])
 
-        }, failure => {
-            console.log('subscribeForData failure', failure);
+            this.ngZone.run(() => {
+                        this.times = intBuffer[0]
+            })
         })
     }
-
     createUser(value) {
-        console.log('Event created!')
         this.events.publish('value', value);
     }
 
