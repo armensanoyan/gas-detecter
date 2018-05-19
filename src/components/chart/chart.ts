@@ -25,13 +25,8 @@ export class ChartComponent {
 
         this.events.subscribe('value', value => {
             this.react(value)
-            this.value = value
-            // user and time are the same arguments passed in `events.publish(user, time)`
-            // console.log('Welcome', value, typeof value);
           });
     
-        // console.log('concentration  ', this.concentration);
- 
         this.lineChart = new Chart(this.lineCanvas.nativeElement, {
 
             type: 'line',
@@ -39,7 +34,7 @@ export class ChartComponent {
                 labels: ['3.5 s', '3 s', '2.5 s', '2 s', "1.5 s", "1 s", "0.5 s", "now"],
                 datasets: [
                     {
-                        label: "My First dataset",
+                        label: "gas concentration",
                         fill: false,
                         lineTension: 0.1,
                         backgroundColor: "rgba(75,192,192,0.4)",
@@ -57,24 +52,12 @@ export class ChartComponent {
                         pointHoverBorderWidth: 2,
                         pointRadius: 1,
                         pointHitRadius: 10,
-                        data: [1, 2, 3, 4, 5, 6, 7, 8],
+                        data: [0, 0, 0, 0, 0, 0, 0, 0],
                         spanGaps: false,
                     }
                 ]
             }
         });
-
-        const listenToData = this.connectionProvider.subscribeForData()
-        listenToData.subscribe(success => {
-            this.concentration = success
-
-            console.log('listenToData', this.concentration);
-            // this.react(this.concentration)
-            this.connectionProvider.write(success)
-
-        }, failure => {
-            console.log('listenToData failure', failure);
-        })
     }
 
     react(value='') {
@@ -92,7 +75,5 @@ export class ChartComponent {
         this.lineChart.data.datasets[0].data.splice(0,1)
         this.lineChart.data.datasets[0].data.push(Number(value))
         this.lineChart.update()
-
-        // console.log('react from chart  ', this.lineChart.data.datasets[0].data);
     }
 }

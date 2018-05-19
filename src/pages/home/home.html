@@ -1,22 +1,14 @@
 <ion-header>
-  <ion-navbar>
+    <ion-navbar>
 
-      <ion-item no-lines style="padding: 0px">
-        <ion-title>Home</ion-title>
-        <ion-icon item-end name='clipboard' (click)='onClickOpenList()'></ion-icon>
-      </ion-item>
+        <ion-item no-lines style="padding: 0px">
+            <ion-title><span item-center [innerHtml]="connectToBluetooth"></span></ion-title>
+            <ion-icon item-end name='clipboard' (click)='onClickOpenList()'></ion-icon>
+        </ion-item>
 
-    </ion-navbar>
+        </ion-navbar>
   </ion-header>
   
 <ion-content padding>
-    
     <chart [concentration]='concentration'></chart>
-    
-    <span [innerHtml]="connectToBluetooth"></span>
-   
-    <span [innerHtml]="times"></span>
-
-    <button ion-button (click)='write()'>message</button>
-
 </ion-content>

@@ -20,10 +20,11 @@ export class ConnectionProvider {
         return pairedDevices
     }
 
-    subscribeForData() {
-        const subscribeForData =this.bluetoothSerial.subscribe('\n')
-        return subscribeForData
-    }
+
+    // subscribeForData() {
+    //     const subscribeForData =this.bluetoothSerial.subscribe('\n')
+    //     return subscribeForData
+    // }
 
     subscribeForRowData() {
         const subscribeForData =this.bluetoothSerial.subscribeRawData()
@@ -40,7 +41,7 @@ export class ConnectionProvider {
         return connection
     }
 
-    write(answear='bugaga') {
+    write(answear='default') {
         this.platform.ready().then(() => {
             const write = this.bluetoothSerial.write(answear + '\n').then((success) => {
             }, failure => {

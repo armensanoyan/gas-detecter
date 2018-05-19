@@ -1,9 +1,6 @@
 import { Component, NgZone } from '@angular/core';
 import { Platform, ActionSheetController, Events } from 'ionic-angular';
-import { AboutPage } from '../about/about'
 import { ConnectionProvider } from '../../providers/connection/connection';
-import { TextEncoder, TextDecoder } from 'text-encoding-shim';
-
 
 @Component({
     selector: 'page-home',
@@ -12,9 +9,7 @@ import { TextEncoder, TextDecoder } from 'text-encoding-shim';
 
 export class HomePage {
 
-    // concentration = 'A'
-    connectToBluetooth
-    times = 0
+    connectToBluetooth = 'not connected'
 
     constructor(
         public connectionProvider: ConnectionProvider,
@@ -36,9 +31,6 @@ export class HomePage {
             console.log('listOfDevices failed ', failure);
         })
     }
-    write() {
-        this.connectionProvider.write()
-    }
 
     displayList(devices) {
         const buttons = []
@@ -55,16 +47,15 @@ export class HomePage {
 
                         connectingToDevice.subscribe((success) => {
                             this.ngZone.run(() => {
-                                this.connectToBluetooth = 'the connection is established'
+                                this.connectToBluetooth = 'Connected'
                                 const rowResult = this.connectionProvider.subscribeForRowData()
-                                this.times++
-                                this.reciveDate(rowResult, this.times)
+                                this.reciveDate(rowResult)
                             })
             
                         }, (failure) => {
                             console.log('failt to connect', failure)
                             this.ngZone.run(() => {
-                                this.connectToBluetooth = `sorry couldn't connect to device`
+                                this.connectToBluetooth = "Couldn't connect"
                             })
                         })
                     }
@@ -86,29 +77,15 @@ export class HomePage {
         }
     }
 
-    reciveDate(subscribeForData, times) {
-        
-        console.log('success -> ', subscribeForData);
-
-        
+    reciveDate(subscribeForData) {
         subscribeForData.subscribe(data => {
-            console.log('data', data);
 
             const intBuffer = new Uint8Array(data) 
 
-            console.log('intBuffer -> ', intBuffer, 'type ->', typeof intBuffer);
-            
-            console.log('first element intBuffer ->', intBuffer[0]);
-            
             this.createUser(intBuffer[0])
-
-            this.ngZone.run(() => {
-                        this.times = intBuffer[0]
-            })
         })
     }
     createUser(value) {
         this.events.publish('value', value);
     }
-
 }
