@@ -18,7 +18,7 @@ export class ChartComponent {
 
     constructor(
         public connectionProvider: ConnectionProvider,
-        public events: Events
+        public events: Events,
     ) {}
 
     ngOnInit() {
@@ -28,14 +28,14 @@ export class ChartComponent {
           });
     
         this.lineChart = new Chart(this.lineCanvas.nativeElement, {
-
+            
             type: 'line',
             data: {
                 labels: ['3.5 s', '3 s', '2.5 s', '2 s', "1.5 s", "1 s", "0.5 s", "now"],
                 datasets: [
                     {
                         label: "gas concentration",
-                        fill: false,
+                        fill: 'origin',
                         lineTension: 0.1,
                         backgroundColor: "rgba(75,192,192,0.4)",
                         borderColor: "rgba(75,192,192,1)",
@@ -55,10 +55,25 @@ export class ChartComponent {
                         data: [0, 0, 0, 0, 0, 0, 0, 0],
                         spanGaps: false,
                     }
-                ]
+                ],
+                
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            max: 255,
+                            min: 0,
+                            maxRotation:5
+                        }
+                    }]
+                }
             }
         });
+        console.log('this.lineChart   ', this.lineChart);
     }
+
+    
 
     react(value='') {
         if (Number(value) > 100) {
