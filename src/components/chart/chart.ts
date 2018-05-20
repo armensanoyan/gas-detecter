@@ -15,13 +15,19 @@ export class ChartComponent {
     public value
  
     lineChart: any;
-
+    XAxis = []
+    XPoints = []
     constructor(
         public connectionProvider: ConnectionProvider,
         public events: Events,
     ) {}
 
     ngOnInit() {
+
+        for(let i=0; i<100; i++) {
+            this.XAxis.push(' ')
+            this.XPoints.push(0)
+        }
 
         this.events.subscribe('value', value => {
             this.react(value)
@@ -31,7 +37,7 @@ export class ChartComponent {
             
             type: 'line',
             data: {
-                labels: ['3.5 s', '3 s', '2.5 s', '2 s', "1.5 s", "1 s", "0.5 s", "now"],
+                labels: this.XAxis,
                 datasets: [
                     {
                         label: "gas concentration",
@@ -44,15 +50,15 @@ export class ChartComponent {
                         borderDashOffset: 0.0,
                         borderJoinStyle: 'miter',
                         pointBorderColor: "rgba(75,192,192,1)",
-                        pointBackgroundColor: "#fff",
+                        pointBackgroundColor: "rgba(75,192,192,1)",
                         pointBorderWidth: 1,
-                        pointHoverRadius: 5,
+                        pointHoverRadius: 2,
                         pointHoverBackgroundColor: "rgba(75,192,192,1)",
                         pointHoverBorderColor: "rgba(220,220,220,1)",
                         pointHoverBorderWidth: 2,
                         pointRadius: 1,
-                        pointHitRadius: 10,
-                        data: [0, 0, 0, 0, 0, 0, 0, 0],
+                        pointHitRadius: 3,
+                        data: this.XPoints,
                         spanGaps: false,
                     }
                 ],
@@ -61,11 +67,21 @@ export class ChartComponent {
             options: {
                 scales: {
                     yAxes: [{
+                        gridLines:{
+                            drawOnChartArea:false
+                        },
                         ticks: {
                             max: 255,
                             min: 0,
                             maxRotation:5
                         }
+                    }],
+                    xAxes:[{
+                        gridLines:{
+                            display: false,
+                            drawBorder:false,
+                            drawOnChartArea:false
+                        },
                     }]
                 }
             }
@@ -76,8 +92,8 @@ export class ChartComponent {
     
 
     react(value='') {
-        if (Number(value) > 100) {
-            this.lineChart.data.datasets[0].backgroundColor = "rgba(255,0,0)"
+        if (Number(value) > 150) {
+            this.lineChart.data.datasets[0].backgroundColor = "rgba(255,0,0,0.4)"
             this.lineChart.data.datasets[0].borderColor = "rgba(255,0,0)"
             this.lineChart.data.datasets[0].pointBorderColor = "rgba(255,0,0)"
         }

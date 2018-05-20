@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.starter" version="0.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>senceograph</name>
+<widget id="sensor.app" version="0.0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>SenceoGraph</name>
     <description>An awesome sensor app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
     <content src="index.html" />
@@ -84,5 +84,5 @@
     <plugin name="cordova-plugin-bluetooth-serial" spec="^0.4.7" />
     <allow-navigation href="http://192.168.5.57:8100" />
     <plugin name="cordova-plugin-statusbar" spec="^2.4.2" />
-    <engine name="android" spec="7.0.0" />
+    <engine name="android" spec="^7.0.0" />
 </widget>
